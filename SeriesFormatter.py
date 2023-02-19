@@ -48,10 +48,14 @@ class SeriesFormatter:
     '''
         Function for querying data and compiling into appropriate data frames
     '''
+    # TODO: REMEMBER THIS IS SET FOR A ID - LIST OF COUNTRIES K/V
+
+    # TODO: CHECK TO SEE IF COUNTRY ALREADY EXISTS IN SERIES TABLE,
+    # TODO: IF IT DOES NO REASON TO REQUERY IT
     def pull_compile_data(self, df_dict: dict) -> None:
         return_dict = {}
-        for name in self._series_ids:
-            return_dict[name] = wbgapi.data.DataFrame(df_dict[name], df_dict[name]).transpose()
+        for id in df_dict:
+            return_dict[id] = wbgapi.data.DataFrame(id, df_dict[id]).transpose()
         return return_dict
 
 
