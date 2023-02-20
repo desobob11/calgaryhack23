@@ -37,7 +37,7 @@
     border: 1px solid;
 }
 
-.selectors {
+.filters {
     display: flex;
     width: 100%;
     height: 100%;
@@ -45,33 +45,37 @@
     justify-content: center;
 }
 
-.selectors * {
+.filters * {
     display: flex;
     width: 100%;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
-.confirm-pull {
+#confirm-pull {
     display: flex;
     height: fit-content;
     padding: 5px 5px 5px 5px;
     justify-content: space-around;
 }
 
-.confirm-pull * {
+#confirm-pull * {
     display: flex;
     justify-content: center;
     width: 100%;
     height: 100%;
 }
 
-.output {
+#output {
     display: flex;
+    flex-direction: column;
     width: 100%;
-    align-items: center;
-    justify-content: center;
+    height: fit-content;
+    
 }
 
-#series-selection {
-    resize: none;
+#add-region-button {
+    display: flex;
+    border: 1px black solid;
+    font-size: 100%;
 }
