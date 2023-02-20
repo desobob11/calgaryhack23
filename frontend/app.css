@@ -68,14 +68,10 @@
 
 #output {
     display: flex;
+    flex-direction: column;
     width: 100%;
-    height: 50%;
-    align-items: center;
-    justify-content: center;
-}
-
-#series-selection {
-    resize: none;
+    height: fit-content;
+    
 }
 
 #add-region-button {

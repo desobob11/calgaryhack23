@@ -25,7 +25,6 @@
 
         <div id="filter-container">
             <h1 class="container-title">Filter Settings</h1>
-            
             <div class="filters">
 
     
@@ -48,26 +47,41 @@
             </div>
 
             <div id="output">
-                <p id="series-selection"></p>
+              <div>This is simple testf to get data from a backend</div>
+              <div><span>Last update: </span><span id="time-container"></span></div>
+
+              <div>
+                <label for="data-input">Data to send:</label>
+                <input type="text" id="data-input">
+                <button onclick=sendData()>Send data</button>
+              </div>
+              <div>
+                  <div id="sent-data-container"></div>
+              </div>
+              <hr>
+
+              <div>
+                <button onclick=getUsers()>Get user data</button>
+                <div id="result-container"></div>
+              </div>
             </div>
 
         </div>
 
         <div id="graph-container">
-            <h1 class="container-title">Graph View</h1>
-            <div class="graph"></div>
+          <h1 class="container-title">Graph View</h1>
+          <div class="graph"></div>
         </div>
 
-    </div>
-
+      </div>
     <div class="copyright">&copy; Desmond O'Brien, Nicola Savino, Marc Seguin, Sean Tan 2023</div>
 
   </body>  
 
   <body>
-    <script src="./app.js"></script>
-
-
+    <script src="communication.js"></script>
+    <script src="post.js"></script>
+    <script src="app.js"></script>
   </body>
   
 </html>
