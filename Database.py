@@ -1,9 +1,9 @@
+import wbgapi.series as wseries
+import json
 import pandas as pd
-import numpy as np
 import sqlite3 as sql3
 import sqlalchemy as sql
-from PullSeries import load_jsons
-from SeriesFormatter import *
+import wbgapi
 
 
 '''
@@ -74,13 +74,13 @@ class Database:
         region_info = wbgapi.region.info().items
         regions = {}
         for i in region_info:
-            r[i["code"]] = i["name"]
+            regions[i["code"]] = i["name"]
 
         # write to JSON files
-        with open("series_data.json", "w") as file:
+        with open("jsons/series_data.json", "w") as file:
             json.dump(series, file)
 
-        with open("regions_data.json", "w") as file:
+        with open("jsons/regions_data.json", "w") as file:
             json.dump(regions, file)
 
 def main():
