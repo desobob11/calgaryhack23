@@ -4,8 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Wordle</title>
-    <link rel="stylesheet" href="./style.css" />
-    <link rel="stylesheet" href="./app.css" />
+
+      <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+
+
+
   </head>
     
 
@@ -27,16 +31,16 @@
             <h1 class="container-title">Filter Settings</h1>
             
             <div class="selectors">
-                <select name="region" id="region-drop">
+                <select name="region" id="region-drop" class="dropdown">
                 </select>
 
-                <select name="series" id="series-drop">
+                <select name="series" id="series-drop" class="dropdown">
                 </select>
             </div>
 
             <div class="confirm-pull">
                 <button onclick=addSeries()>Add Series</button>
-                <button>Pull Series</button>
+                <button onclick="sendToServer()">Pull Series</button>
             </div>
 
             <div class="output">
@@ -57,9 +61,8 @@
   </body>  
 
   <body>
-    <script src="./app.js"></script>
-
-
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script src="{{ url_for('static', filename='jquery-3.6.3.js') }}"></script>
   </body>
   
 </html>

@@ -1,3 +1,5 @@
+import './jquery-3.6.3'
+import jquery363 from './jquery-3.6.3';
 
 function toggleDarkMode() {
 
@@ -18,6 +20,10 @@ function toggleDarkMode() {
         buttons.children[2].classList.remove("dark-mode");
     }
 }
+
+
+
+
 
 
 async function loadJson(filename, type) {
@@ -47,7 +53,7 @@ async function loadJson(filename, type) {
 
 async function fetchJson(filename) {
     //fetches local json files
-    let filepath = "./json/" + filename + ".json";
+    let filepath = "./static/json/" + filename + ".json";
     let regions = 
     await fetch(filepath)
         .then(response => { return response.json();})
@@ -58,12 +64,41 @@ function addSeries() {
     let text_box = document.getElementById("series-selection");
     let region = document.getElementById("region-drop");
     let series = document.getElementById("series-drop");
-    text_box.textContent = region.value + " * " + series.value;
+    text_box.textContent = text_box.textContent + region.value + " * " + series.value + "\n";
 }
+
+var selected_series = {}
+
+function sendToServer() {
+    let text_box = document.getElementById("series-selection");
+    let lines = text_box.textContent.split("\n")
+    for (let i = 0; i < lines.length; ++i) {
+        let codes = lines[i].split(" * ")
+        let region = codes[0]
+        let series = codes[1]
+
+
+
+        if (selected_series[series] == undefined) {
+            selected_series[series] = [region]
+        }
+        else {
+            if (!(selected_series[series].includes(region))) {
+                selected_series[series].push(region)
+            }
+        }
+
+    }
+    jQuery.post()
+
+    })
+}
+
+
 
 async function main() {
     loadJson("regions_data", "region"); //load regions filter
     loadJson("series_data", "series"); //load series filter
 }
 
-main();
+main()
