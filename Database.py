@@ -37,32 +37,9 @@ class Database:
                 # drop common columns, join, and write
                 new = new.drop([i for i in new.columns if i in original.columns], axis=1)
                 new = original.join(new)
+                con.cursor().execute("drop table %s" % table_name)
                 new.to_sql(con=engine, name=table_name, index=True, if_exists="replace")
-                # TODO: Traceback (most recent call last):
-                #   File "C:\Users\desmo\calgaryhack23\Database.py", line 172, in <module>
-                #     main()
-                #   File "C:\Users\desmo\calgaryhack23\Database.py", line 168, in main
-                #     Database.load_data(con, engine, sample_data)
-                #   File "C:\Users\desmo\calgaryhack23\Database.py", line 87, in load_data
-                #     Database.write_to_database(con, engine, dataframes)
-                #   File "C:\Users\desmo\calgaryhack23\Database.py", line 43, in write_to_database
-                #     df_dict[id].to_sql(con=engine, name=table_name, index=True)
-                #   File "C:\Users\desmo\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\core\generic.py", line 2987, in to_sql
-                #     return sql.to_sql(
-                #            ^^^^^^^^^^^
-                #   File "C:\Users\desmo\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\io\sql.py", line 695, in to_sql
-                #     return pandas_sql.to_sql(
-                #            ^^^^^^^^^^^^^^^^^^
-                #   File "C:\Users\desmo\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\io\sql.py", line 1728, in to_sql
-                #     table = self.prep_table(
-                #             ^^^^^^^^^^^^^^^^
-                #   File "C:\Users\desmo\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\io\sql.py", line 1631, in prep_table
-                #     table.create()
-                #   File "C:\Users\desmo\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\io\sql.py", line 829, in create
-                #     raise ValueError(f"Table '{self.name}' already exists.")
-                # ValueError: Table 'AG_LND_EL5M_UR_K2' already exists.
-                #
-                # Process finished with exit code 1
+
             except Exception:
                 # write brand new table to DB
                 df_dict[id].to_sql(con=engine, name=table_name, index=True)
