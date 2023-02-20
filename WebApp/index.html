@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Wordle</title>
+    <title>WB Dashboard</title>
     <link rel="stylesheet" href="./style.css" />
     <link rel="stylesheet" href="./app.css" />
   </head>
@@ -26,21 +26,29 @@
         <div id="filter-container">
             <h1 class="container-title">Filter Settings</h1>
             
-            <div class="selectors">
-                <select name="region" id="region-drop">
-                </select>
+            <div class="filters">
 
-                <select name="series" id="series-drop">
-                </select>
+    
+                <div id="series">
+                  <h4>series</h4>
+                  <select name="series" id="series-drop"></select>
+                </div>
+
+
+                <div id="region">
+                  <h4>region</h4>
+                  <select name="region" id="region-drop"></select>
+                  <button id="region-filter-button" onclick=addRegion()>Add</button>
+                </div>
             </div>
 
-            <div class="confirm-pull">
-                <button onclick=addSeries()>Add Series</button>
-                <button>Pull Series</button>
+            <div id="confirm-pull">
+                <button id="add-button">Add Data</button>
+                <button id="pull-button">Pull Data</button>
             </div>
 
-            <div class="output">
-                <textarea name="output" id="series-selection" cols="100" rows="10"></textarea>
+            <div id="output">
+                <p id="series-selection"></p>
             </div>
 
         </div>

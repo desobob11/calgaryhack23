@@ -77,10 +77,10 @@ class Database:
             regions[i["code"]] = i["name"]
 
         # write to JSON files
-        with open("jsons/series_data.json", "w") as file:
+        with open("WebApp/jsons/series_data.json", "w") as file:
             json.dump(series, file)
 
-        with open("jsons/regions_data.json", "w") as file:
+        with open("WebApp/jsons/regions_data.json", "w") as file:
             json.dump(regions, file)
 
 def main():
@@ -89,20 +89,12 @@ def main():
     con = sql3.connect("gen_data.db")
     c = con.cursor()
 
-
     sample_data = {"AG.LND.EL5M.UR.K2" : ["AFW", "AFR", "AFE, LDC"],
                    "AG.LND.EL5M.UR.ZS" : ["AFW", "MNA", "LDC", "ECS", "NAC"]}
 
 
-
-
-
-
     Database.load_jsons()
     data_dict = Database.pull_from_wb(sample_data)
-
-
-
 
     Database.write_to_database(con, engine, data_dict)
 
