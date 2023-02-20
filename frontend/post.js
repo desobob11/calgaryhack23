@@ -8,7 +8,7 @@ function sendDataCallback() {
 }
 
 function sendData() {
-    dataToSend = document.getElementById('data-input').value;
+    dataToSend = document.getElementById('data-input').value; //get value of data to send
     if (!dataToSend) {
         console.log("Data is empty.");
         return;

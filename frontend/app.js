@@ -18,9 +18,6 @@ function toggleDarkMode() {
     }
 }
 
-
-
-
 function populateDropdown(dict, type) {
     let dropdown = document.getElementById(`${type}-drop`);//select dropdown menu
     
