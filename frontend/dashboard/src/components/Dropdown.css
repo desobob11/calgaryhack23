@@ -1,0 +1,22 @@
+
+.dropdown-menu {
+    margin: 0;
+    padding: 0;
+}
+
+h4 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    padding: 5px;
+    display: flex;
+    align-self: flex-start;
+}
+
+select {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.2;
+    margin: 0;
+    max-width: fit-content;
+}

@@ -113,19 +113,6 @@ class Database:
         # write any new data to sqlite database
         Database.write_to_database(con, dataframes)
         return dataframes
-
-
-
-
-
-
-
-
-
-
-
-
-
     '''
         Function for pulling data from WB and formatting index
     '''
@@ -205,9 +192,6 @@ def main():
 
     sample_data = {"AG.LND.EL5M.UR.K2" : ["AFW", "ECS", "LDC"],
                    "AG.LND.EL5M.UR.ZS" : ["AFW", "ECS", "LDC"]}
-
-
-
 
 
 

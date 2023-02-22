@@ -3,41 +3,35 @@ from flask import request
 import flask
 import json
 from flask_cors import CORS
+from Database import Database
+import sqlite3 as sql3
+import sqlalchemy as sql
 
 
 app = Flask(__name__)
 CORS(app)
 
-query_data = None
-
-@app.route("/")
-def hello():
-    return "Hello"
+con = sql3.connect("gen_data.db")
+cursor = con.cursor()
 
 
-@app.route('/users', methods=["GET", "POST"])
-def users():
-    print("users endpoint reached...")
-    if request.method == "GET":
+@app.route("/jsons", methods=["GET"])
+def data():
+    Database.load_jsons()
 
-        with open("users.json", "r") as f:
-            data = json.load(f)
-            data.append({
-                "username": "user4",
-                "pets": ["hamster"]
-            })
-            return flask.jsonify(data)
+    with open("jsons/series_data.json", "r") as file:
+        series = json.load(file)
 
-    if request.method == "POST":
-        received_data = request.get_json()
-        print(f"received data: {received_data}")
-        message = received_data['data']
-        return_data = {
-            "status": "success",
-            "message": f"received: {message}"
-        }
-        return flask.Response(response=json.dumps(return_data), status=201)
+    with open("jsons/regions_data.json", "r") as file:
+        regions = json.load(file)
+
+    response = {
+        "series": series,
+        "regions": regions,
+        "status": "success"
+        
+    }
+    return response
     
-
 if __name__ == "__main__":
     app.run("localhost", 6969, debug=True)
