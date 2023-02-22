@@ -14,7 +14,7 @@ class Database:
 # TODO: ACCOMODATE NEW DATE ROW ENTRIES FOR FUTURE
 
     @staticmethod
-    def write_to_database(con, engine, df_dict: dict[str, pd.DataFrame]) -> None:
+    def write_to_database(con, df_dict: dict[str, pd.DataFrame]) -> None:
         # loop over each dataframe in dictionary
         # remember, key in dictionary is series id
         # so table names in sql database will be series id
@@ -40,11 +40,11 @@ class Database:
                 new = original.join(new)
                 new.index = original.index
                 con.cursor().execute("drop table %s" % table_name)
-                new.to_sql(con=engine, name=table_name, index=False)
+                new.to_sql(con=con, name=table_name, index=False)
 
             except Exception:
                 # write brand new table to DB
-                df_dict[id].to_sql(con=engine, name=table_name, index=True)
+                df_dict[id].to_sql(con=con, name=table_name, index=True)
 
 
 
@@ -53,7 +53,7 @@ class Database:
         instead of querying from world bank again through API
     '''
     @staticmethod
-    def pull_from_database(con, engine, input_data: dict[str: list[str]]) -> dict[str, pd.DataFrame]:
+    def pull_from_database(con, input_data: dict[str: list[str]]) -> dict[str, pd.DataFrame]:
         return_dict = {}
         for id in input_data:
             # remove periods in id for SQL safety
@@ -86,9 +86,10 @@ class Database:
     
     '''
     @staticmethod
-    def load_data(con, engine, input_data: dict[str, list[str]]) -> dict[str: pd.DataFrame]:
+    def load_data(con, input_data: dict[str, list[str]]) -> dict[str: pd.DataFrame]:
         # try pulling as much data as we can from database
-        dataframes = Database.pull_from_database(con, engine, input_data)
+        dataframes = Database.pull_from_database(con, input_data)
+
 
         # query rest of data from WB
         for id in input_data:
@@ -97,17 +98,21 @@ class Database:
                 local_data = dataframes[id]
                 # only pull series data for regions that have no data stored locally
                 series_to_pull = [i for i in input_data[id] if i not in local_data.columns]
-                print(series_to_pull)
-                pulled_data = Database.pull_from_wb(id, series_to_pull)
-                dataframes[id] = local_data.join(pulled_data)
+                try:
+                    pulled_data = Database.pull_from_wb(id, series_to_pull)
+                    dataframes[id] = local_data.join(pulled_data)
+                except:
+                    pass
             # if no local data exists, just create the key value pair in dataframes
             except KeyError:
-                dataframes[id] = Database.pull_from_wb(id, input_data[id])
+                try:
+                    dataframes[id] = Database.pull_from_wb(id, input_data[id])
+                except:
+                    pass
 
         # write any new data to sqlite database
-        Database.write_to_database(con, engine, dataframes)
+        Database.write_to_database(con, dataframes)
         return dataframes
-
 
 
 
@@ -150,7 +155,7 @@ class Database:
         Dictionaries mapping ids to names are written for both regions and series
     '''
     @staticmethod
-    def load_jsons():
+    def load_jsons() -> None:
         # names and ids from world bank, organized a bit wonky
         series_info = wseries.info().items
 
@@ -198,7 +203,8 @@ def main():
     #sample_data = {"AG.LND.EL5M.UR.K2" : ["AFW", "LDC", "ECS", "NAC", "EUU", "MNA", "SAS", "CSA", "EAS"],
          #          "AG.LND.EL5M.UR.ZS" : ["AFW", "MNA", "LDC", "ECS", "NAC", "EUU", "MNA", "SAS", "CSA", "EAS"]}
 
-    sample_data = {"DT.NFL.PCBO.CD" : ["AFW", "LDC", "ECS", "NAC", "EUU", "CAN", "USA", "IDX", "MEX"]}
+    sample_data = {"AG.LND.EL5M.UR.K2" : ["AFW", "ECS", "LDC"],
+                   "AG.LND.EL5M.UR.ZS" : ["AFW", "ECS", "LDC"]}
 
 
 
@@ -217,9 +223,10 @@ def main():
    # Database.write_to_database(con, engine, data_dict)
 
     #dfs = Database.pull_from_database(con, engine, sample_data)
-    Database.load_data(con, engine, sample_data)
-    #Database.load_jsons()
+    dataframes = Database.load_data(con,sample_data)
 
+    print(dataframes)
+    #Database.load_jsons()
 
 if __name__ == "__main__":
     main()
