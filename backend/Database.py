@@ -14,7 +14,7 @@ class Database:
 # TODO: ACCOMODATE NEW DATE ROW ENTRIES FOR FUTURE
 
     @staticmethod
-    def write_to_database(con, engine, df_dict: dict[str, pd.DataFrame]) -> None:
+    def write_to_database(con, df_dict: dict[str, pd.DataFrame]) -> None:
         # loop over each dataframe in dictionary
         # remember, key in dictionary is series id
         # so table names in sql database will be series id
@@ -40,11 +40,11 @@ class Database:
                 new = original.join(new)
                 new.index = original.index
                 con.cursor().execute("drop table %s" % table_name)
-                new.to_sql(con=engine, name=table_name, index=False)
+                new.to_sql(con=con, name=table_name, index=False)
 
             except Exception:
                 # write brand new table to DB
-                df_dict[id].to_sql(con=engine, name=table_name, index=True)
+                df_dict[id].to_sql(con=con, name=table_name, index=True)
 
 
 
@@ -53,7 +53,7 @@ class Database:
         instead of querying from world bank again through API
     '''
     @staticmethod
-    def pull_from_database(con, engine, input_data: dict[str: list[str]]) -> dict[str, pd.DataFrame]:
+    def pull_from_database(con, input_data: dict[str: list[str]]) -> dict[str, pd.DataFrame]:
         return_dict = {}
         for id in input_data:
             # remove periods in id for SQL safety
@@ -86,9 +86,9 @@ class Database:
     
     '''
     @staticmethod
-    def load_data(con, engine, input_data: dict[str, list[str]]) -> dict[str: pd.DataFrame]:
+    def load_data(con, input_data: dict[str, list[str]]) -> dict[str: pd.DataFrame]:
         # try pulling as much data as we can from database
-        dataframes = Database.pull_from_database(con, engine, input_data)
+        dataframes = Database.pull_from_database(con, input_data)
 
         # query rest of data from WB
         for id in input_data:
@@ -105,19 +105,8 @@ class Database:
                 dataframes[id] = Database.pull_from_wb(id, input_data[id])
 
         # write any new data to sqlite database
-        Database.write_to_database(con, engine, dataframes)
+        Database.write_to_database(con, dataframes)
         return dataframes
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -199,9 +188,6 @@ def main():
          #          "AG.LND.EL5M.UR.ZS" : ["AFW", "MNA", "LDC", "ECS", "NAC", "EUU", "MNA", "SAS", "CSA", "EAS"]}
 
     sample_data = {"DT.NFL.PCBO.CD" : ["AFW", "LDC", "ECS", "NAC", "EUU", "CAN", "USA", "IDX", "MEX"]}
-
-
-
 
 
 

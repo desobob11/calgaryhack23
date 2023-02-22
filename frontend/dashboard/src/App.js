@@ -2,32 +2,20 @@ import Dropdown from './components/Dropdown';
 import Button from './components/Button';
 import './App.css';
 import { useEffect } from 'react';
+import FilterContainer from './components/FilterContainer';
 
 function App() {  
   //#TODO:  
   //- Add a function to get the data from the backend
   //- Add a function to send data to the backend
 
-  const regions_dictionary = { "AFR": "Africa", "AMR": "Americas", "EMR": "Eastern Mediterranean", "EUR": "Europe", "SEAR": "South-East Asia", "WPR": "Western Pacific"}
-  const series_dictionary = {"NY.GDP.MKTP.CD": "GDP (current US$)", "NY.GDP.PCAP.CD": "GDP per capita (current US$)", "SP.POP.TOTL": "Population, total"}
 
   return (
     <div className="App">
       
-      <div id="filter-container">
-          <h1 className="container-title">Filter Settings</h1>
-          
-          <div className="filters">
-            <Dropdown name={"series"} dictionary={regions_dictionary}></Dropdown>
-            <Dropdown name={"region"} dictionary={series_dictionary}></Dropdown>
-            <Button></Button>
-          </div>
+      <FilterContainer list = {["series", "regions"]}></FilterContainer>
 
-          <div id="confirm-pull">
-            <button id="add-button">Add Data</button>
-            <button id="pull-button">Pull Data</button>
-          </div>
-      </div>
+
 
       <div id="graph-container">
         <h1 className="container-title">Graph View</h1>

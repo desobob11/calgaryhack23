@@ -9,6 +9,8 @@ h4 {
     font-weight: 500;
     line-height: 1.2;
     padding: 5px;
+    display: flex;
+    align-self: flex-start;
 }
 
 select {
@@ -16,4 +18,5 @@ select {
     font-weight: 500;
     line-height: 1.2;
     margin: 0;
+    max-width: fit-content;
 }
