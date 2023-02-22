@@ -20,7 +20,7 @@ def users():
     print("users endpoint reached...")
     if request.method == "GET":
 
-        with open("users.json", "r") as f:
+        with open("./users.json", "r") as f:
             data = json.load(f)
             data.append({
                 "username": "user4",

@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, useEffect } from "react";
 import { useState } from "react";
 import './Dropdown.css';
 
@@ -17,10 +17,23 @@ export default function Dropdown (props) {
         - dictionary: dictionary of items to be added to the dropdown
     */
 
-    function dropdownItems(dictionary){
+    const [data, setData] = useState({
+        dictionary: "",
+    });
+        
+    useEffect(() => {
+        fetch("/jsons").then((response) => 
+            response.json()).then((data) => {
+            //get dictionary from api
+            setData({
+                dictionary: data,
+            });
+    }) }, []);
+
+    function dropdownItems(data){
         //builds a list of dropdown items from a dictionary
         let items = [];
-        for (const [key, value] of Object.entries(dictionary)) {
+        for (const [key, value] of Object.entries(data["dictionary"])) {
             items.push(<option value={key}>{value}</option>);
         }
         return items;
