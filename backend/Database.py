@@ -64,12 +64,14 @@ class Database:
             existing_columns = table_info["name"].tolist()
 
             # format list of existing columns into comma separated list for sql query
-            good_columns = "%s" % ",".join([i for i in input_data[id] if i in existing_columns])
+            good_columns = "%s" % ",".join([i for i in input_data[id] if i in existing_columns]) + ",index"
 
             try:
                 # query existing columns from database and add to dictionary key
-                return_dict[id] =  pd.read_sql("SELECT %s from %s" % (good_columns, safe_id), con)
-            except pd.errors.DatabaseError:
+                return_dict[id] =  pd.read_sql("SELECT %s from %s" % (good_columns, safe_id), con, index_col=True)
+                print("FROM DB")
+            except pd.errors.DatabaseError as e:
+                print(e)
                 pass
         return return_dict
 
@@ -133,6 +135,7 @@ class Database:
     def pull_from_wb(series_id:str, regions: list[str]) -> dict[str, pd.DataFrame]:
         # pull the series
         table = wbgapi.data.DataFrame(series_id, regions).transpose()
+        print("FROM WB")
 
         # index starts as the format: ["YR2015, YR2016"], etc
         non_dates = table.index
@@ -200,11 +203,11 @@ def main():
     </wb:error>
     '''
 
-    #sample_data = {"AG.LND.EL5M.UR.K2" : ["AFW", "LDC", "ECS", "NAC", "EUU", "MNA", "SAS", "CSA", "EAS"],
-         #          "AG.LND.EL5M.UR.ZS" : ["AFW", "MNA", "LDC", "ECS", "NAC", "EUU", "MNA", "SAS", "CSA", "EAS"]}
+    sample_data = {"AG.LND.EL5M.UR.K2" : ["AFW", "LDC", "ECS", "NAC", "EUU", "MNA", "SAS", "CSA", "EAS"],
+                  "AG.LND.EL5M.UR.ZS" : ["AFW", "MNA", "LDC", "ECS", "NAC", "EUU", "MNA", "SAS", "CSA", "EAS"]}
 
-    sample_data = {"AG.LND.EL5M.UR.K2" : ["AFW", "ECS", "LDC"],
-                   "AG.LND.EL5M.UR.ZS" : ["AFW", "ECS", "LDC"]}
+    #sample_data = {"AG.LND.EL5M.UR.K2" : ["AFW", "ECS", "LDC"],
+     #              "AG.LND.EL5M.UR.ZS" : ["AFW", "ECS", "LDC"]}
 
 
 
