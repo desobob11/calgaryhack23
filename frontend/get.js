@@ -34,4 +34,3 @@ function getDate() {
     date = new Date().toString();
     document.getElementById('time-container').textContent = date;
 }
-
