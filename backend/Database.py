@@ -19,6 +19,7 @@ class Database:
         # remember, key in dictionary is series id
         # so table names in sql database will be series id
         for id in df_dict:
+   
 
             # format name or else will throw sql error
             table_name = str(id).replace(".", "_")
@@ -32,19 +33,18 @@ class Database:
             # and essentially just adding new columns
             try:
                 original = pd.read_sql("SELECT * FROM %s" % table_name, con)
-
                 new = df_dict[id]
-
                 # drop common columns, join, and write
-                new = new.drop([i for i in new.columns if i in original.columns], axis=1)
+                new = new.drop([i for i in new.columns if i in original.columns and i != "index"], axis=1)
+     
                 new = original.join(new)
                 new.index = original.index
                 con.cursor().execute("drop table %s" % table_name)
                 new.to_sql(con=con, name=table_name, index=False)
 
-            except Exception:
+            except Exception as e:
                 # write brand new table to DB
-                df_dict[id].to_sql(con=con, name=table_name, index=True)
+                df_dict[id].to_sql(con=con, name=table_name, index=False)
 
 
 
@@ -64,14 +64,14 @@ class Database:
             existing_columns = table_info["name"].tolist()
 
             # format list of existing columns into comma separated list for sql query
-            good_columns = "%s" % ",".join([i for i in input_data[id] if i in existing_columns]) + ",index"
+            good_columns = "%s" % ",".join([i for i in input_data[id] if i in existing_columns]) + ",year"
+            print(good_columns)
 
             try:
                 # query existing columns from database and add to dictionary key
-                return_dict[id] =  pd.read_sql("SELECT %s from %s" % (good_columns, safe_id), con, index_col=True)
-                print("FROM DB")
+                return_dict[id] =  pd.read_sql("SELECT %s from %s" % (good_columns, safe_id), con)
+
             except pd.errors.DatabaseError as e:
-                print(e)
                 pass
         return return_dict
 
@@ -99,7 +99,7 @@ class Database:
             try:
                 local_data = dataframes[id]
                 # only pull series data for regions that have no data stored locally
-                series_to_pull = [i for i in input_data[id] if i not in local_data.columns]
+                series_to_pull = [i for i in input_data[id] if i not in local_data.columns and i !="index"]
                 try:
                     pulled_data = Database.pull_from_wb(id, series_to_pull)
                     dataframes[id] = local_data.join(pulled_data)
@@ -135,7 +135,8 @@ class Database:
     def pull_from_wb(series_id:str, regions: list[str]) -> dict[str, pd.DataFrame]:
         # pull the series
         table = wbgapi.data.DataFrame(series_id, regions).transpose()
-        print("FROM WB")
+
+
 
         # index starts as the format: ["YR2015, YR2016"], etc
         non_dates = table.index
@@ -146,7 +147,7 @@ class Database:
             # for each original index, append only numeric characters to new dates list
             dates.append(re.sub("[^0-9]", "", i))
         # replace the index and return the table
-        table.index = dates
+        table["year"] = dates
         return table
 
 
@@ -227,8 +228,9 @@ def main():
 
     #dfs = Database.pull_from_database(con, engine, sample_data)
     dataframes = Database.load_data(con,sample_data)
-
     print(dataframes)
+
+
     #Database.load_jsons()
 
 if __name__ == "__main__":

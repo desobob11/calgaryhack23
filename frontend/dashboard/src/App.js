@@ -1,5 +1,6 @@
 import Dropdown from './components/Dropdown';
 import Button from './components/Button';
+import Figure from './components/Figure';
 import './App.css';
 
 function App() {  
@@ -52,7 +53,11 @@ function App() {
           <button>Get user data</button>
           <div id="result-container"></div>
         </div>
+        
 
+        <Figure></Figure>
+
+ 
       </div>
 
 
