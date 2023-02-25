@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { useState } from "react";
+import { useState, useEffect, setState} from "react";
 import './Dropdown.css';
 
 
@@ -9,7 +9,7 @@ import './Dropdown.css';
 //     );
 // }
 
-export default function Dropdown (props) {
+export function Dropdown (props) {
     //builds a list of dropdown items from a dictionary
     /*
         props: 
@@ -35,4 +35,110 @@ export default function Dropdown (props) {
         </div>
 
     );
+}
+
+
+
+export function SeriesSelecter(props) {
+    const [seriesJSON, setSeriesJSON] = useState({})
+    const [regionsJSON, setRegionJSON] = useState({})
+    
+    const [activeSeries, setActiveSeries] = useState("")
+    const [activeRegion, setActiveRegion] = useState("")
+
+    const [dataToBackend, setDataToBackend] = useState({})
+
+    const [selectSeries, setSelectSeries] = useState([])
+    const [selectRegions, setSelectRegions] = useState([])
+    const [regionsOptions, setRegionsOptions] = useState([])
+    const [seriesOptions, setSeriesOptions] = useState([])
+
+    function flask_getRegionsJSON() {
+            const options = {
+                method: "POST",
+                headers: {"Content-Type" : "application/json"},
+                body: JSON.stringify({title: "Testing"})
+            };
+            fetch('http://127.0.0.1:5000/jsons/regions_data.json/', options)
+            .then(response => response.json()).then(data_back => {setRegionJSON(data_back)});
+    }
+
+    function flask_getSeriesJSON() {
+        const options = {
+            method: "POST",
+            headers: {"Content-Type" : "application/json"},
+            body: JSON.stringify({title: "Testing"})
+        };
+        fetch('http://127.0.0.1:5000/jsons/series_data.json/', options)
+        .then(response => response.json()).then(data_back => {setSeriesJSON(data_back)});
+}
+
+    useEffect(() => {
+        flask_getSeriesJSON();
+        flask_getRegionsJSON();
+        loadDropdowns()
+    }, []);
+
+
+
+    function loadDropdowns() {
+        let s_options = []
+        let r_options = []
+
+        for (const [key, value] of Object.entries(seriesJSON)) {
+            s_options.push(<option> {key} </option>)
+        }
+
+        for (const [key, value] of Object.entries(regionsJSON)) {
+            r_options.push(<option> {value} - {key} </option>)
+        }
+
+        setSeriesOptions(s_options)
+        setRegionsOptions(r_options)   
+    }
+    //onChange={(e) => {setSeriesID(e.target.value)}
+
+    function addSeries() {
+        let region_code = activeRegion.split(" - ")[0]
+        let series_code = seriesJSON[activeSeries]
+        if (dataToBackend[series_code] == undefined) {
+            dataToBackend[series_code] = [region_code]
+        }
+        else {
+            if (!(dataToBackend[series_code].includes(region_code))) {
+                dataToBackend[series_code].push(region_code)
+            }
+        }
+        alert(dataToBackend[series_code])
+    }
+
+    function sendSeries() {
+        const options = {
+            method: "POST",
+            headers: {"Content-Type" : "application/json"},
+            body: JSON.stringify(dataToBackend)
+        };
+        fetch('http://127.0.0.1:5000/jsons/', options)
+        .then(response => response.json())
+    }
+
+    return (
+
+        <div>
+            <select onChange={(e) => {setActiveSeries(e.target.value)}}>
+                {seriesOptions}
+            </select>
+            <select onChange={(e) => {setActiveRegion(e.target.value)}}>
+                {regionsOptions}
+            </select>
+            <button onClick = {() => addSeries()}> Add Series</button>
+            <button onClick = {() => sendSeries()}> Select Series</button>
+        </div>
+
+    );
+
+
+
+
+    
 }

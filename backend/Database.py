@@ -168,7 +168,7 @@ class Database:
         # map each series id to its text name in dictionary d
         series = {}
         for i in series_info:
-            series[i["id"]] = i["value"]
+            series[i["value"]] = i["id"]
 
         # do the same for regions
         region_info = wbgapi.region.info().items
@@ -176,9 +176,9 @@ class Database:
 
         regions = {}
         for i in region_info:
-            regions[i["code"]] = i["name"]
+            regions[i["name"]] = i["code"]
         for i in country_info:
-            regions[i["id"]] = i["value"]
+            regions[i["value"]] = i["id"]
 
         # write to JSON files
         with open("jsons/series_data.json", "w") as file:

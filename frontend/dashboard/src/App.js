@@ -1,6 +1,6 @@
 import Dropdown from './components/Dropdown';
 import Button from './components/Button';
-import Figure from './components/Figure';
+import { SeriesSelecter } from './components/Dropdown';
 import './App.css';
 
 function App() {  
@@ -18,14 +18,11 @@ function App() {
           <h1 className="container-title">Filter Settings</h1>
           
           <div className="filters">
-            <Dropdown name={"series"} dictionary={regions_dictionary}></Dropdown>
-            <Dropdown name={"region"} dictionary={series_dictionary}></Dropdown>
-            <Button></Button>
+          <SeriesSelecter></SeriesSelecter>
           </div>
 
           <div id="confirm-pull">
-            <button id="add-button">Add Data</button>
-            <button id="pull-button">Pull Data</button>
+
           </div>
       </div>
 
@@ -53,9 +50,13 @@ function App() {
           <button>Get user data</button>
           <div id="result-container"></div>
         </div>
+        <div>
+            <img src={require('.//components/fig.png')}></img>
+
+        </div>
         
 
-        <Figure></Figure>
+
 
  
       </div>
