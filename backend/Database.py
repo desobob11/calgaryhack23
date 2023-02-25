@@ -64,6 +64,7 @@ class Database:
             existing_columns = table_info["name"].tolist()
 
             # format list of existing columns into comma separated list for sql query
+            # Note, 'year' is a column in every table from the database dneoting the time of observation
             good_columns = "%s" % ",".join([i for i in input_data[id] if i in existing_columns]) + ",year"
             print(good_columns)
 
@@ -100,6 +101,7 @@ class Database:
                 local_data = dataframes[id]
                 # only pull series data for regions that have no data stored locally
                 series_to_pull = [i for i in input_data[id] if i not in local_data.columns and i !="index"]
+                # TODO: REMEMBER WHAT IS BEING EXCEPTED HERE
                 try:
                     pulled_data = Database.pull_from_wb(id, series_to_pull)
                     dataframes[id] = local_data.join(pulled_data)
