@@ -8,7 +8,9 @@ from Database import Database
 import json
 import matplotlib.style as style
 import pathlib as path
-
+import matplotlib
+plt.switch_backend('agg')
+matplotlib.use('Agg')
 
 class Plotter:
 
@@ -19,10 +21,8 @@ class Plotter:
         with open("jsons/series_data.json", "r") as file:
             self._series_map = json.load(file)
 
-        root = path.Path.cwd().parent
-        self._write_path = str(root.as_posix() + "/frontend/dashboard/src/components")
-        self._figure = None
-
+        self._write_path = str("jsons/figure")
+    
     def stack(self, series_map: dict[str, list[str]]) -> None:
         plt.style.use('seaborn-v0_8-pastel')
         x_axis = None
@@ -50,29 +50,34 @@ class Plotter:
 
 
     def line(self, series_map: dict[str, list[str]]) -> None:
-        plt.style.use('seaborn-v0_8-whitegrid')
-        x_axis = None
-        self._figure = plt.figure(1)
-        legend = []
-        for i in series_map:
-            table = self._data[i]
-            print(table)
-            if x_axis is None:
-                x_axis = table["year"].astype(int)
-            for j in series_map[i]:
-                try:
-                    t = table[j].dropna()
-                    if len(t) > 0:
-                        plt.plot(x_axis, table[j])
-                        legend.append("%s - %s" % (j, self._series_map[i]))
-                except:
-                    pass
-        plt.legend(legend)
-        plt.xticks(np.arange(min(x_axis), max(x_axis), 10))
-        #plt.show()
+        if len(self._data.keys()) > 0:
+            plt.style.use('seaborn-v0_8-whitegrid')
+            x_axis = None
+            self._figure = plt.figure(1)
+            legend = []
+            for i in series_map:
+                table = self._data[i]
+                print(table)
+                if x_axis is None:
+                    x_axis = table["year"].astype(int)
+                for j in series_map[i]:
+                    try:
+                        t = table[j].dropna()
+                        if len(t) > 0:
+                            plt.plot(x_axis, table[j])
+                            legend.append("%s - %s" % (j, self._series_map[i]))
+                    except:
+                        pass
+            plt.legend(legend)
+            plt.xticks(np.arange(min(x_axis), max(x_axis), 10))
+            #plt.show()
 
     def save_fig(self):
-        self._figure.savefig(self._write_path + "/fig.png", format="png")
+        if len(self._data.keys()) > 0:
+            self._figure.savefig(self._write_path + "/img.png", format="png")
+        else:
+            with open("jsons/figure/img.png", "wb+") as file:
+                pass
 
 
 
@@ -85,7 +90,7 @@ class Plotter:
 
 
 def main():
-    sample_data = {"EG.USE.COMM.FO.ZS": ["CAN", "USA"]}
+    sample_data = {}
 
     graph_data = sample_data
 

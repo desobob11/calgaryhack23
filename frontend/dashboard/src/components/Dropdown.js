@@ -53,6 +53,8 @@ export function SeriesSelecter(props) {
     const [regionsOptions, setRegionsOptions] = useState([])
     const [seriesOptions, setSeriesOptions] = useState([])
 
+
+
     function flask_getRegionsJSON() {
             const options = {
                 method: "POST",
@@ -112,6 +114,17 @@ export function SeriesSelecter(props) {
         alert(dataToBackend[series_code])
     }
 
+    function clearSeries() {
+        const options = {
+            method: "POST",
+            headers: {"Content-Type" : "application/json"},
+            body: JSON.stringify(JSON.stringify({}))
+        };
+        fetch('http://127.0.0.1:5000/jsons/clear/', options)
+        .then(response => response.json())
+        setDataToBackend({})
+    }
+
     function sendSeries() {
         const options = {
             method: "POST",
@@ -133,12 +146,36 @@ export function SeriesSelecter(props) {
             </select>
             <button onClick = {() => addSeries()}> Add Series</button>
             <button onClick = {() => sendSeries()}> Select Series</button>
+            <button onClick = {() => clearSeries()}> Clear Series </button>
         </div>
 
     );
+}
 
 
+export function Figure(props) {
+    const [figure, setFigure] = useState("")
+
+    function getFigure() {
+        const options = {
+            method: "POST",
+            headers: {"Content-Type" : "imgage/png"},
+            body: JSON.stringify({title: "Testing"})
+        };
+        fetch('http://127.0.0.1:5000/jsons/figure/', options)
+        .then(response => response.json()).then(data_back => {setFigure(data_back)});
+        //return <img src={`data:image/png;base64,${figure}`} alt={""}> </img>
+    }
 
 
+    return(
+        <div>
+                <button onClick={() =>getFigure()}> Visualize</button>
+            <img src={`data:image/png;base64,${figure.png_string}`} alt="Series selecton invalid or empty..."></img>
+
+        </div>
+    );
     
+    
+    ;
 }

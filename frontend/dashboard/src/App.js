@@ -1,6 +1,6 @@
 import Dropdown from './components/Dropdown';
 import Button from './components/Button';
-import { SeriesSelecter } from './components/Dropdown';
+import { SeriesSelecter, Figure} from './components/Dropdown';
 import './App.css';
 
 function App() {  
@@ -31,29 +31,13 @@ function App() {
         <div className="graph"></div>
 
         <div id="output">
-        <div>This is simple test to get data from a backend</div>
+
         
-        <div><span>Last update: </span><span id="time-container"></span></div>
 
-        <div>
-          <label>Data to send:</label>
-          <input type="text" id="data-input"></input>
-          <button>Send data</button>
-        </div>
-      
-        <div>
-            <div id="sent-data-container"></div>
-        </div>
-        <hr></hr>
 
-        <div>
-          <button>Get user data</button>
-          <div id="result-container"></div>
-        </div>
-        <div>
-            <img src={require('.//components/fig.png')}></img>
+    
 
-        </div>
+        <Figure></Figure>
         
 
 
