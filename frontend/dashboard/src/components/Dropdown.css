@@ -9,6 +9,8 @@ h4 {
     font-weight: 500;
     line-height: 1.2;
     padding: 5px;
+    display: flex;
+    align-self: flex-start;
 }
 
 select {
@@ -16,11 +18,6 @@ select {
     font-weight: 500;
     line-height: 1.2;
     margin: 0;
-}
-
-
-.standard-button {
-    width:15%;
-    font-size: large;
-    font-family: Arial, Helvetica, sans-serif;
+    max-width: 100%;
+    width: fit-content;
 }

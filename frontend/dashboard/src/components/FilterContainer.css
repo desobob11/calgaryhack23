@@ -1,0 +1,20 @@
+/* Path: frontend/dashboard/src/components/Filters.css */
+
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e0e0e0;
+  max-width: 50%;
+}
+
+.container-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    border: 1px dotted;
+    padding: 5px;
+    margin: 5px;
+    flex-grow: 0;
+  }
