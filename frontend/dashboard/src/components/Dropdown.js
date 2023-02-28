@@ -33,10 +33,14 @@ export default function Dropdown (props) {
         return items;
     }
 
+    function handleChange(event) {
+        props.storeCurrentSelection(event.target.value);
+    }
+
     return (
         <div className="dropdown-menu" id={props.name}>
             <h4>{props.name}</h4>
-            <select name={props.name} id={props.name + '-drop'}>
+            <select name={props.name} id={props.name + '-drop'} onChange={handleChange}>
                 {dropdownItems()}
             </select>
         </div>

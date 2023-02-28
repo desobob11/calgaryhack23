@@ -1,0 +1,27 @@
+.current-filter {
+    display: flex;
+    height: 30px;
+    min-width: fit-content;
+    width: 30px;
+    border: 1px solid;
+    border-radius: 50%;
+    border-color: blue;
+    font-size: large;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5px;
+    padding: 5px;
+}
+
+.remove-filter-button {
+    display: flex;
+    height: min-content;
+    width: fit-content;
+    align-items: center;
+    border: 1px darkblue solid;
+    border-radius: 100%;
+    background-color: transparent;
+    margin-left: 5px;
+    margin-right: 5px;
+}

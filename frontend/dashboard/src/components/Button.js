@@ -13,7 +13,7 @@ function Button(props) {
         <button 
             className={props.className} 
             id={props.id} 
-            onClick={() => setCount(count + 1)}>{props.name + " " + count}
+            onClick={props.onClick}>{props.name}
         </button>
     );
 }

@@ -7,8 +7,6 @@
 }
 
 .App * {
-  display: flex;
-  flex-direction: column;
   margin: 0;
 }
 
@@ -20,5 +18,6 @@
   justify-content: flex-start;
   height: 100%;
   max-width: 50%;
+  width: 50%;
   border: 1px #ccc solid;
 }
