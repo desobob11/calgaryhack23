@@ -32,3 +32,11 @@
 .filter-button {
     width: fit-content;
 }
+
+.current-filters {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+}

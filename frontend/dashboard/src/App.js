@@ -4,6 +4,7 @@ import './App.css';
 import { useEffect } from 'react';
 import FilterContainer from './components/FilterContainer';
 
+
 function App() {  
   //#TODO:  
   //- Add a function to get the data from the backend
@@ -14,8 +15,6 @@ function App() {
     <div className="App">
       
       <FilterContainer list = {["series", "regions"]}></FilterContainer>
-
-
 
       <div id="graph-container">
         <h1 className="container-title">Graph View</h1>
