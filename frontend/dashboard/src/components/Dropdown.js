@@ -144,9 +144,9 @@ export function SeriesSelecter(props) {
             <select onChange={(e) => {setActiveRegion(e.target.value)}}>
                 {regionsOptions}
             </select>
-            <button onClick = {() => addSeries()}> Add Series</button>
-            <button onClick = {() => sendSeries()}> Select Series</button>
-            <button onClick = {() => clearSeries()}> Clear Series </button>
+            <button onClick = {() => addSeries()} className="standard-button"> Add Series</button>
+            <button onClick = {() => sendSeries()} className="standard-button"> Select Series</button>
+            <button onClick = {() => clearSeries()} className="standard-button"> Clear Series </button>
         </div>
 
     );

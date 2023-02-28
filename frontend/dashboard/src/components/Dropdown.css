@@ -17,3 +17,10 @@ select {
     line-height: 1.2;
     margin: 0;
 }
+
+
+.standard-button {
+    width:15%;
+    font-size: large;
+    font-family: Arial, Helvetica, sans-serif;
+}

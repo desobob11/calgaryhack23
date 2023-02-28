@@ -14,7 +14,7 @@ function App() {
   return (
     <div className="App">
       
-      <div id="filter-container">
+      <div id="filter-container" className='dark-pane'>
           <h1 className="container-title">Filter Settings</h1>
           
           <div className="filters">
@@ -26,7 +26,7 @@ function App() {
           </div>
       </div>
 
-      <div id="graph-container">
+      <div id="graph-container" classname='dark-pane'>
         <h1 className="container-title">Graph View</h1>
         <div className="graph"></div>
 
