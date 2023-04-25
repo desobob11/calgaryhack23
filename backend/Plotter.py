@@ -76,7 +76,7 @@ class Plotter:
         if len(self._data.keys()) > 0:
             self._figure.savefig(self._write_path + "/img.png", format="png")
         else:
-            with open("jsons/figure/img.png", "wb+") as file:
+            with open("jsons/figure/img.png", "wb") as file:
                 pass
 
 

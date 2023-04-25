@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
+import pandas as pd
 import flask
 import json
 from Database import Database
@@ -13,7 +14,7 @@ CORS(app)
 with open("jsons/figure/img.png", "wb+") as file:
     pass
 Database.load_jsons()
-active_data = None
+#active_data = None
 class Application:
 
 
@@ -42,6 +43,9 @@ class Application:
             payload = json.load(file)
         return jsonify(payload)
     
+
+
+
     @app.route('/jsons/series_data.json/', methods=["POST", "GET"])
     @cross_origin()
     def send_series_json():
@@ -50,20 +54,29 @@ class Application:
             payload = json.load(file)
         return jsonify(payload)
     
+
+
+
     @app.route('/jsons/', methods=["POST", "GET"])
     @cross_origin()
     def get_selected_series():
         active_data = request.json
+        print(active_data)
         con = sqlite3.connect("gen_data.db")
 
         pulled_data = Database.load_data(con, active_data)
+        print(pulled_data)
 
         plotter = Plotter(pulled_data)
-        plotter.line(active_data)
+        plotter.line(pulled_data)
         plotter.save_fig()
         plotter._data = {}
+        active_data = None
         return "<div> Request received </div>"
     
+
+
+
     @app.route('/jsons/figure/', methods=["POST", "GET"])
     @cross_origin()
     def send_figure():
@@ -78,10 +91,18 @@ class Application:
             return jsonify({"png_string": b64})
 
 
+
+
+
     @app.route('/jsons/clear/', methods=["POST", "GET"])
     @cross_origin()
     def clear_data():
-        return
+        empty_data = request.json
+        plotter = Plotter(pd.DataFrame())
+        plotter.line(pd.DataFrame())
+        plotter.save_fig()
+        plotter._data = {}
+        return "<div> data cleared </div>"
 
 
 

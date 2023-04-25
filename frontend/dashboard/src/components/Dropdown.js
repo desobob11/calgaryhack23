@@ -78,26 +78,30 @@ export function SeriesSelecter(props) {
     useEffect(() => {
         flask_getSeriesJSON();
         flask_getRegionsJSON();
-        loadDropdowns()
     }, []);
 
 
 
-    function loadDropdowns() {
-        let s_options = []
+    function loadRegionsDropdowns() {
         let r_options = []
-
-        for (const [key, value] of Object.entries(seriesJSON)) {
-            s_options.push(<option> {key} </option>)
-        }
 
         for (const [key, value] of Object.entries(regionsJSON)) {
             r_options.push(<option> {value} - {key} </option>)
         }
 
-        setSeriesOptions(s_options)
-        setRegionsOptions(r_options)   
+        return r_options
     }
+
+    function loadSeriesDropdowns() {
+        let s_options = []
+
+        for (const [key, value] of Object.entries(seriesJSON)) {
+            s_options.push(<option> {key} </option>)
+        }
+
+        return s_options
+    }
+
     //onChange={(e) => {setSeriesID(e.target.value)}
 
     function addSeries() {
@@ -117,13 +121,14 @@ export function SeriesSelecter(props) {
     function clearSeries() {
         const options = {
             method: "POST",
-            headers: {"Content-Type" : "application/json"},
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(JSON.stringify({}))
         };
         fetch('http://127.0.0.1:5000/jsons/clear/', options)
-        .then(response => response.json())
+            .then(response => response.json())
         setDataToBackend({})
     }
+
 
     function sendSeries() {
         const options = {
@@ -136,13 +141,12 @@ export function SeriesSelecter(props) {
     }
 
     return (
-
         <div>
             <select onChange={(e) => {setActiveSeries(e.target.value)}}>
-                {seriesOptions}
+                {loadSeriesDropdowns()}
             </select>
             <select onChange={(e) => {setActiveRegion(e.target.value)}}>
-                {regionsOptions}
+                {loadRegionsDropdowns()}
             </select>
             <button onClick = {() => addSeries()} className="standard-button"> Add Series</button>
             <button onClick = {() => sendSeries()} className="standard-button"> Select Series</button>
